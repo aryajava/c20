@@ -1,57 +1,65 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 module.exports = (db) => {
   // Select by id
-  const getById = (id) => {
-    db.get('SELECT * FROM data WHERE id = ?', [id], (err, row) => {
+  const getById = (id, callback) => {
+    db.get("SELECT * FROM data WHERE id = ?", [id], (err, row) => {
       if (err) {
-        throw err;
+        callback(err);
       }
-      return row;
+      if (!row) {
+        callback(new Error("No record found"));
+      }
+      callback(null, row);
     });
   };
   // Add
-  const add = (name, height, weight, birthdate, married) => {
-    db.run('INSERT INTO data(name, height, weight, birthdate, married) VALUES(?, ?, ?, ?, ?)', [name, height, weight, birthdate, married], (err) => {
+  const add = (name, height, weight, birthdate, married, callback) => {
+    db.run("INSERT INTO data(name, height, weight, birthdate, married) VALUES(?, ?, ?, ?, ?)", [name, height, weight, birthdate, married], (err) => {
       if (err) {
-        throw err;
+        return callback(err);
       }
+      callback(null);
     });
   };
+
   // Edit
-  const edit = (id, name, height, weight, birthdate, married) => {
-    db.run('UPDATE data SET name = ?, height = ?, weight = ?, birthdate = ?, married = ? WHERE id = ?', [name, height, weight, birthdate, married, id], (err) => {
+  const edit = (id, name, height, weight, birthdate, married, callback) => {
+    db.run("UPDATE data SET name = ?, height = ?, weight = ?, birthdate = ?, married = ? WHERE id = ?", [name, height, weight, birthdate, married, id], (err) => {
       if (err) {
-        throw err;
+        return callback(err);
       }
+      callback(null);
     });
   };
+
   // Remove
-  const remove = (id) => {
-    db.run('DELETE FROM data WHERE id = ?', [id], (err) => {
+  const remove = (id, callback) => {
+    db.run("DELETE FROM data WHERE id = ?", [id], (err) => {
       if (err) {
-        throw err;
+        return callback(err);
       }
+      callback(null);
     });
-  }
+  };
 
   // Routes
   // Index Page
-  router.get('/', (req, res, next) => {
+  router.get("/", (req, res, next) => {
     const page = req.query.page || 1; // set default page to 1
     const limit = 5; // set limit of records per page
     const offset = (page - 1) * limit; // set offset
     // extract query parameters
     const { name, height, weight, startdate, lastdate, married, operation } = req.query;
     const searchParams = new URLSearchParams({
-      name: name || '',
-      height: height || '',
-      weight: weight || '',
-      startdate: startdate || '',
-      lastdate: lastdate || '',
-      married: married || '',
-      operation: operation || 'OR'
+      name: name || "",
+      height: height || "",
+      weight: weight || "",
+      startdate: startdate || "",
+      lastdate: lastdate || "",
+      married: married || "",
+      operation: operation || "OR",
     });
 
     const conditions = [];
@@ -59,27 +67,27 @@ module.exports = (db) => {
     let searchParamsString = ``;
 
     if (name) {
-      conditions.push('name LIKE ?');
+      conditions.push("name LIKE ?");
       params.push(`%${name}%`);
     }
     if (height) {
-      conditions.push('height = ?');
+      conditions.push("height = ?");
       params.push(height);
     }
     if (weight) {
-      conditions.push('weight = ?');
+      conditions.push("weight = ?");
       params.push(weight);
     }
     if (startdate || lastdate) {
       try {
         if (startdate && lastdate) {
-          conditions.push('birthdate BETWEEN ? AND ?');
+          conditions.push("birthdate BETWEEN ? AND ?");
           params.push(startdate, lastdate);
         } else if (startdate) {
-          conditions.push('birthdate >= ?');
+          conditions.push("birthdate >= ?");
           params.push(startdate);
         } else if (lastdate) {
-          conditions.push('birthdate <= ?');
+          conditions.push("birthdate <= ?");
           params.push(lastdate);
         }
       } catch (error) {
@@ -87,12 +95,12 @@ module.exports = (db) => {
       }
     }
     if (married) {
-      conditions.push('married = ?');
+      conditions.push("married = ?");
       params.push(married);
     }
 
     // Set the WHERE clause based on the conditions
-    let whereClause = conditions.length > 0 ? `WHERE ${conditions.join(` ${operation} `)}` : '';
+    let whereClause = conditions.length > 0 ? `WHERE ${conditions.join(` ${operation} `)}` : "";
     // Get total records from the database
     let totalRecords = `SELECT COUNT(*) as total FROM data ${whereClause}`;
 
@@ -111,21 +119,57 @@ module.exports = (db) => {
         }
         searchParamsString = searchParams.toString();
 
-        res.render('index', {
-          title: 'BREAD Application',
+        res.render("index", {
+          title: "BREAD Application",
           data: rows,
           searchParams: Object.fromEntries(searchParams.entries()), // Mengubah URLSearchParams menjadi objek JavaScript biasa
           searchParamsString,
           total,
           page,
-          pages
+          pages,
         });
       });
     });
   });
-  // Add Page
 
-  // Edit Page
+  // Add
+  // Add Form
+  router.get("/add", (req, res, next) => {
+    res.render("add", { title: "Add Data" });
+  });
+  // Add Save
+  router.post("/add", (req, res, next) => {
+    const { name, height, weight, birthdate, married } = req.body;
+    add(name, height, weight, birthdate, married, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
+  });
+
+  // Edit
+  // Edit Form
+  router.get("/edit/:id", (req, res, next) => {
+    const id = req.params.id;
+    getById(id, (err, data) => {
+      if (err) {
+        return next(err);
+      }
+      res.render("edit", { title: "Edit Data", data });
+    });
+  });
+  // Edit Save
+  router.post("/edit/:id", (req, res, next) => {
+    const id = req.params.id;
+    const { name, height, weight, birthdate, married } = req.body;
+    edit(id, name, height, weight, birthdate, married, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
+  });
 
   return router;
 };
