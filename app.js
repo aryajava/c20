@@ -3,6 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var sqlite3 = require('sqlite3').verbose();
+
+
+var db = new sqlite3.Database('db/users.db', (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Connected to the users database.');
+});
 
 var indexRouter = require('./routes/index');
 
@@ -18,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', indexRouter(db));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
