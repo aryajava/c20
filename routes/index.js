@@ -170,6 +170,16 @@ module.exports = (db) => {
       res.redirect("/");
     });
   });
+  // Remove
+  router.post("/remove/:id", (req, res, next) => {
+    const id = req.params.id;
+    remove(id, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
+  });
 
   return router;
 };
