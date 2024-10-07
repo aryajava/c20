@@ -110,7 +110,7 @@ module.exports = (db) => {
       }
       const total = row.total;
       const pages = Math.ceil(total / limit);
-      let query = `SELECT * FROM data ${whereClause} ORDER BY id DESC LIMIT ? OFFSET ?`;
+      let query = `SELECT * FROM data ${whereClause} ORDER BY id ASC LIMIT ? OFFSET ?`;
 
       // Get the data from the database
       db.all(query, [...params, limit, offset], (err, rows) => {
@@ -120,7 +120,7 @@ module.exports = (db) => {
         searchParamsString = searchParams.toString();
 
         res.render("index", {
-          title: "BREAD Application",
+          title: "SQLite BREAD (Browse, Read, Edit, Add, Delete) and Pagination",
           data: rows,
           searchParams: Object.fromEntries(searchParams.entries()), // Mengubah URLSearchParams menjadi objek JavaScript biasa
           searchParamsString,
@@ -135,7 +135,7 @@ module.exports = (db) => {
   // Add
   // Add Form
   router.get("/add", (req, res, next) => {
-    res.render("add", { title: "Add Data" });
+    res.render("add", { title: "Adding Data" });
   });
   // Add Save
   router.post("/add", (req, res, next) => {
@@ -156,7 +156,7 @@ module.exports = (db) => {
       if (err) {
         return next(err);
       }
-      res.render("edit", { title: "Edit Data", data });
+      res.render("edit", { title: "Updating Data", data });
     });
   });
   // Edit Save
