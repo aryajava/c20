@@ -53,19 +53,9 @@ module.exports = (db) => {
     const offset = (page - 1) * limit; // set offset
     // extract query parameters
     const { name, height, weight, startdate, lastdate, married, operation } = req.query;
-    const searchParams = new URLSearchParams({
-      name: name || "",
-      height: height || "",
-      weight: weight || "",
-      startdate: startdate || "",
-      lastdate: lastdate || "",
-      married: married || "",
-      operation: operation || "OR",
-    });
 
     const conditions = [];
     const params = [];
-    let searchParamsString = ``;
 
     if (name) {
       conditions.push("name LIKE '%' || ? || '%'");
@@ -112,13 +102,11 @@ module.exports = (db) => {
         if (err) {
           return next(err);
         }
-        searchParamsString = searchParams.toString();
 
         res.render("index", {
           title: "SQLite BREAD (Browse, Read, Edit, Add, Delete) and Pagination",
           data: rows,
-          searchParams: req.query, // Mengubah URLSearchParams menjadi objek JavaScript biasa
-          searchParamsString,
+          searchParams: req.query,
           total,
           page,
           pages,
@@ -178,4 +166,3 @@ module.exports = (db) => {
 
   return router;
 };
-

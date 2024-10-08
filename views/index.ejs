@@ -132,38 +132,38 @@
         <a href="/add"> <button type="button" class="btn btn-blue">Add</button></a>
         <div class="pagination">
           <% if (total > 0 && pages > 1) { %>
-            <!-- Previous button -->
-            <% if (parseInt(page) > 1) { %>
-              <a href="?page=<%= parseInt(page) - 1 %>&<%= searchParamsString %>">&laquo;</a>
-            <% } %>
-        
-            <!-- First page -->
-            <a class="<%= parseInt(page) === 1 ? 'active' : '' %>" href="?page=1&<%= searchParamsString %>">1</a>
-  
-            <!-- Ellipsis before current page range -->
-            <% if (parseInt(page) > 3) { %>
-              <a class="disabled">...</a>
-            <% } %>
-        
-            <!-- Page range around current page -->
-            <% for (let i = Math.max(2, parseInt(page) - 1); i <= Math.min(pages - 1, parseInt(page) + 1); i++) { %>
-              <a class="<%= i === parseInt(page) ? 'active' : '' %>" href="?page=<%= i %>&<%= searchParamsString %>"><%= i %></a>
-            <% } %>
-        
-            <!-- Ellipsis after current page range -->
-            <% if (parseInt(page) < pages - 2) { %>
-              <a class="disabled">...</a>
-            <% } %>
-        
-            <!-- Last page -->
-            <% if (pages > 1) { %>
-              <a class="<%= parseInt(page) === pages ? 'active' : '' %>" href="?page=<%= pages %>&<%= searchParamsString %>"><%= pages %></a>
-            <% } %>
-        
-            <!-- Next button -->
-            <% if (parseInt(page) < pages) { %>
-              <a href="?page=<%= parseInt(page) + 1 %>&<%= searchParamsString %>">&raquo;</a>
-            <% } %>
+          <!-- Previous button -->
+          <% if (parseInt(page) > 1) { %>
+          <a href="?<%= Object.keys(searchParams).filter(key => key !== 'page').map(key => key + '=' + searchParams[key]).join('&') %>&page=<%= parseInt(page) - 1 %>">&laquo;</a>
+          <% } %>
+
+          <!-- First page -->
+          <a class="<%= parseInt(page) === 1 ? 'active' : '' %>" href="?<%= Object.keys(searchParams).filter(key => key !== 'page').map(key => key + '=' + searchParams[key]).join('&') %>&page=1">1</a>
+
+          <!-- Ellipsis before current page range -->
+          <% if (parseInt(page) > 3) { %>
+          <a class="disabled">...</a>
+          <% } %>
+
+          <!-- Page range around current page -->
+          <% for (let i = Math.max(2, parseInt(page) - 1); i <= Math.min(pages - 1, parseInt(page) + 1); i++) { %>
+          <a class="<%= i === parseInt(page) ? 'active' : '' %>" href="?<%= Object.keys(searchParams).filter(key => key !== 'page').map(key => key + '=' + searchParams[key]).join('&') %>&page=<%= i %>"><%= i %></a>
+          <% } %>
+
+          <!-- Ellipsis after current page range -->
+          <% if (parseInt(page) < pages - 2) { %>
+          <a class="disabled">...</a>
+          <% } %>
+
+          <!-- Last page -->
+          <% if (pages > 1) { %>
+          <a class="<%= parseInt(page) === pages ? 'active' : '' %>" href="?<%= Object.keys(searchParams).filter(key => key !== 'page').map(key => key + '=' + searchParams[key]).join('&') %>&page=<%= pages %>"><%= pages %></a>
+          <% } %>
+
+          <!-- Next button -->
+          <% if (parseInt(page) < pages) { %>
+          <a href="?<%= Object.keys(searchParams).filter(key => key !== 'page').map(key => key + '=' + searchParams[key]).join('&') %>&page=<%= parseInt(page) + 1 %>">&raquo;</a>
+          <% } %>
           <% } %>
         </div>
       </div>
