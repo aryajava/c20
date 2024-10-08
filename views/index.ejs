@@ -129,50 +129,43 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="">
-          <a href="/add"> <button type="button" class="btn btn-blue">Add</button></a>
-        </div>
+        <a href="/add"> <button type="button" class="btn btn-blue">Add</button></a>
         <div class="pagination">
           <% if (total > 0 && pages > 1) { %>
-          <!-- Tombol sebelumnya -->
-          <% if (parseInt(page) > 1) { %>
-          <a href="?page=<%= parseInt(page) - 1 %>&<%= searchParamsString %>">&laquo;</a>
-          <% } %>
-
-          <!-- Tampilkan 5 halaman pertama atau sekitar halaman aktif -->
-          <% if (parseInt(page) <= 5) { %>
-          <% for (let i = 1; i <= Math.min(5, pages); i++) { %>
-          <a class="<%= i === parseInt(page) ? 'active' : '' %>" href="?page=<%= i %>&<%= searchParamsString %>"><%= i %></a>
-          <% } %>
-          <% if (pages > 5) { %>
-          <a class="disabled">...</a>
-          <a href="?page=<%= pages %>&<%= searchParamsString %>"><%= pages %></a>
-          <% } %>
-          <% } else if (parseInt(page) > 5 && parseInt(page) < pages - 4) { %>
-          <!-- Tampilkan ellipsis sebelum dan sesudah halaman tengah -->
-          <a href="?page=1&<%= searchParamsString %>">1</a>
-          <a class="disabled">...</a>
-          <% for (let i = parseInt(page) - 2; i <= parseInt(page) + 2; i++) { %>
-          <a class="<%= i === parseInt(page) ? 'active' : '' %>" href="?page=<%= i %>&<%= searchParamsString %>"><%= i %></a>
-          <% } %>
-          <a class="disabled">...</a>
-          <a href="?page=<%= pages %>&<%= searchParamsString %>"><%= pages %></a>
-          <% } else { %>
-          <!-- Tampilkan halaman terakhir dan beberapa halaman sebelumnya -->
-          <a href="?page=1&<%= searchParamsString %>">1</a>
-          <a class="disabled">...</a>
-          <% for (let i = pages - 4; i <= pages; i++) { %>
-          <a class="<%= i === parseInt(page) ? 'active' : '' %>" href="?page=<%= i %>&<%= searchParamsString %>"><%= i %></a>
-          <% } %>
-          <% } %>
-
-          <!-- Tombol selanjutnya -->
-          <% if (parseInt(page) < pages) { %>
-          <a href="?page=<%= parseInt(page) + 1 %>&<%= searchParamsString %>">&raquo;</a>
-          <% } %>
+            <!-- Previous button -->
+            <% if (parseInt(page) > 1) { %>
+              <a href="?page=<%= parseInt(page) - 1 %>&<%= searchParamsString %>">&laquo;</a>
+            <% } %>
+        
+            <!-- First page -->
+            <a class="<%= parseInt(page) === 1 ? 'active' : '' %>" href="?page=1&<%= searchParamsString %>">1</a>
+        
+            <!-- Ellipsis before current page range -->
+            <% if (parseInt(page) > 3) { %>
+              <a class="disabled">...</a>
+            <% } %>
+        
+            <!-- Page range around current page -->
+            <% for (let i = Math.max(2, parseInt(page) - 1); i <= Math.min(pages - 1, parseInt(page) + 1); i++) { %>
+              <a class="<%= i === parseInt(page) ? 'active' : '' %>" href="?page=<%= i %>&<%= searchParamsString %>"><%= i %></a>
+            <% } %>
+        
+            <!-- Ellipsis after current page range -->
+            <% if (parseInt(page) < pages - 2) { %>
+              <a class="disabled">...</a>
+            <% } %>
+        
+            <!-- Last page -->
+            <% if (pages > 1) { %>
+              <a class="<%= parseInt(page) === pages ? 'active' : '' %>" href="?page=<%= pages %>&<%= searchParamsString %>"><%= pages %></a>
+            <% } %>
+        
+            <!-- Next button -->
+            <% if (parseInt(page) < pages) { %>
+              <a href="?page=<%= parseInt(page) + 1 %>&<%= searchParamsString %>">&raquo;</a>
+            <% } %>
           <% } %>
         </div>
-
       </div>
     </div>
     <div>
