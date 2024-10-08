@@ -120,8 +120,8 @@
                 </td>
               </tr>
               <% }) %> <% } else { %>
-              <tr>
-                <td colspan="7">No data found</td>
+              <tr class="row">
+                <td colspan="7" class="col text-center">No data found</td>
               </tr>
               <% } %>
             </tbody>
@@ -139,7 +139,7 @@
         
             <!-- First page -->
             <a class="<%= parseInt(page) === 1 ? 'active' : '' %>" href="?page=1&<%= searchParamsString %>">1</a>
-        
+  
             <!-- Ellipsis before current page range -->
             <% if (parseInt(page) > 3) { %>
               <a class="disabled">...</a>

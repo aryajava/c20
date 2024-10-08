@@ -1,3 +1,4 @@
+const { log } = require("debug/src/browser");
 var express = require("express");
 var router = express.Router();
 
@@ -67,8 +68,8 @@ module.exports = (db) => {
     let searchParamsString = ``;
 
     if (name) {
-      conditions.push("name LIKE ?");
-      params.push(`%${name}%`);
+      conditions.push("name LIKE '%' || ? || '%'");
+      params.push(name);
     }
     if (height) {
       conditions.push("height = ?");
@@ -78,21 +79,15 @@ module.exports = (db) => {
       conditions.push("weight = ?");
       params.push(weight);
     }
-    if (startdate || lastdate) {
-      try {
-        if (startdate && lastdate) {
-          conditions.push("birthdate BETWEEN ? AND ?");
-          params.push(startdate, lastdate);
-        } else if (startdate) {
-          conditions.push("birthdate >= ?");
-          params.push(startdate);
-        } else if (lastdate) {
-          conditions.push("birthdate <= ?");
-          params.push(lastdate);
-        }
-      } catch (error) {
-        return next(error);
-      }
+    if (startdate && lastdate) {
+      conditions.push("birthdate BETWEEN ? AND ?");
+      params.push(startdate, lastdate);
+    } else if (startdate) {
+      conditions.push("birthdate >= ?");
+      params.push(startdate);
+    } else if (lastdate) {
+      conditions.push("birthdate <= ?");
+      params.push(lastdate);
     }
     if (married) {
       conditions.push("married = ?");
@@ -122,7 +117,7 @@ module.exports = (db) => {
         res.render("index", {
           title: "SQLite BREAD (Browse, Read, Edit, Add, Delete) and Pagination",
           data: rows,
-          searchParams: Object.fromEntries(searchParams.entries()), // Mengubah URLSearchParams menjadi objek JavaScript biasa
+          searchParams: req.query, // Mengubah URLSearchParams menjadi objek JavaScript biasa
           searchParamsString,
           total,
           page,
@@ -183,3 +178,4 @@ module.exports = (db) => {
 
   return router;
 };
+

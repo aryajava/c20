@@ -386,6 +386,11 @@ hr {
   border-top: 1px solid #ccc;
 }
 
+.text-center {
+  text-align: center !important;
+  font-weight: bold;
+}
+
 /* Table Styles */
 .table {
   width: 100%;
