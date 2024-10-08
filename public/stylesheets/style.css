@@ -397,7 +397,7 @@ hr {
 
 .table th,
 .table td {
-  padding: 12px 15px;
+  /* padding: 12px; */
   text-align: left;
 }
 
@@ -475,11 +475,10 @@ hr {
   }
 }
 
-
 .btn {
   width: auto;
-  padding: .5vw 2.5vw;
-  margin-inline: .2vw;
+  padding: 0.5vw 2.5vw;
+  margin-inline-end: 0.3vw;
   border-radius: 5px;
   border: none;
   font-weight: 500;
@@ -618,7 +617,6 @@ hr {
   margin: 0;
 }
 
-
 /* Modal Body */
 .modal-body {
   padding: 1vw;
@@ -637,7 +635,7 @@ hr {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  padding: calc(1rem - 0.5rem * .5)
+  padding: calc(1rem - 0.5rem * 0.5);
 }
 
 .modal-footer form {
@@ -655,19 +653,19 @@ hr {
   width: 30%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 /* Add Animation */
 @keyframes animatetop {
   from {
     top: -300px;
-    opacity: 0
+    opacity: 0;
   }
 
   to {
     top: 0;
-    opacity: 1
+    opacity: 1;
   }
 }
 
@@ -694,6 +692,7 @@ select {
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
+  background-color: transparent;
   border: 1px solid #ced4da;
   border-radius: 4px;
   transition: border-color 0.3s ease;
@@ -817,3 +816,4 @@ input[type="radio"]:disabled::before {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
