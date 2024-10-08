@@ -48,7 +48,7 @@
             <div class="col col-4">
               <input type="date" id="startdate" name="startdate" value="<%= searchParams.startdate || ''  %>" max="2024-12-31" />
             </div>
-            <div class="col col-1">
+            <div class="col-1">
               <label for="lastdate" style="justify-content: center;">s.d.</label>
             </div>
             <div class="col col-4">
@@ -97,24 +97,24 @@
             <thead>
               <tr class="row">
                 <th class="col">No.</th>
-                <th class="col">Name</th>
+                <th class="col-md-2">Name</th>
                 <th class="col">Height</th>
                 <th class="col">Weight</th>
                 <th class="col">Birthdate</th>
                 <th class="col">Married</th>
-                <th class="col-4">Actions</th>
+                <th class="col-md-4">Actions</th>
               </tr>
             </thead>
             <tbody id="data-tbody">
               <% if (data.length > 0) { %> <% data.forEach((row, index) => { %>
               <tr class="row">
                 <td data-label="No." class="col"><%= index+1 %></td>
-                <td data-label="Name" class="col"><%= row.name %></td>
+                <td data-label="Name" class="col-md-2"><%= row.name %></td>
                 <td data-label="Height" class="col"><%= row.height %></td>
                 <td data-label="Weight" class="col"><%= row.weight %></td>
                 <td data-label="Birthdate" class="col"><%= row.birthdate %></td>
                 <td data-label="Married" class="col"><%= row.married ? 'Yes' : 'No' %></td>
-                <td data-label="Actions" class="col-4">
+                <td data-label="Actions" class="col-md-4">
                   <a href="/edit/<%= row.id %>"><button type="button" class="btn btn-green">Edit</button></a>
                   <button type="button" class="btn btn-red" onclick="showDeleteModal(parseInt(`<%= row.id %>`), `<%= row.name %>`)">Delete</button>
                 </td>

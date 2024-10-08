@@ -447,7 +447,7 @@ hr {
 
   .table td {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     text-align: left;
     padding: 10px;
@@ -466,7 +466,6 @@ hr {
   }
 
   .table tr {
-    margin-bottom: 10px;
     border-bottom: 2px solid #ddd;
   }
 
@@ -721,6 +720,7 @@ button:hover {
 
 a {
   /* margin-left: 1rem; */
+  margin-right: auto;
   color: #007bff;
   text-decoration: none;
 }
