@@ -1,6 +1,6 @@
 # Rubicamp Batch 40
 
-> Challenge 20
+> Challenge 20 With Express Generator
 
 This BREAD (Browse, Read, Edit, Add, Delete) project is Express JS application with EJS template engine.
 
